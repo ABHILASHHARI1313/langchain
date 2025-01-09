@@ -1,8 +1,0 @@
-pyvenv.cfg/
-Include/
-Lib/
-Scripts/
-etc/
-share/
-.env/
-.gitignore/
