@@ -50,7 +50,7 @@ if prompt:
     start =time.process_time()
     response = retrieval_chain.invoke({"input":prompt})
     print("Response time:",time.process_time()-start)
-    st.write(response['answer'])
+    st.write(response)
 
     with st.expander("Document Similarity Search"):
         # Find the relevant chunks
