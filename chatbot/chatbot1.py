@@ -3,7 +3,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.llms import Ollama
 from langchain_community.chat_message_histories import FileChatMessageHistory
-import streamlit as st
 
 # Initialize the model
 llm = Ollama(model="llama3.2")
