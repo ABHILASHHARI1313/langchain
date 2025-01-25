@@ -1,4 +1,4 @@
-# https://medium.com/@petarjoncheski/web-chatgpt-chatbot-using-langchain-and-streamlit-5c0bb1740814
+# https://medium.com/@petarjloncheski/web-chatgpt-chatbot-using-langchain-and-streamlit-5c0bb1740814
 from langchain_core.prompts import ChatPromptTemplate, HumanMessagePromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from langchain_community.llms import Ollama
@@ -18,13 +18,14 @@ memory: ConversationBufferMemory = ConversationBufferMemory(
     memory_key='chat_history',
     chat_memory=history,
     return_messages=True
-)\
-    
+)
 # Define the prompt template
-prompt = ChatPromptTemplate.from_template(
-    SystemMessage(content='You are a chatbot having a conversation with a human.'),
+prompt = ChatPromptTemplate(
+    input_variables=['content'],
+    messages=[SystemMessage(content='You are a chatbot having a conversation with a human.'),
     MessagesPlaceholder(variable_name="chat_history"),
-    HumanMessagePromptTemplate.from_template('{content}')
+    HumanMessagePromptTemplate.from_template('{content}')],
+
 )
 
 # Set up the chain
@@ -35,6 +36,11 @@ while True:
     if content.lower() in ['quit', 'exit', 'bye']:
         print('Goodbye!')
         break
-    response = chain.invoke({"content": content})
+    chat_history = memory.load_memory_variables({})['chat_history']
+    response = chain.invoke({
+        "content" : content,
+        "chat_history" : chat_history
+    })
+    memory.save_context({"content":content},{"response":response})
     print(response)
     print('-' * 50)
